@@ -4,13 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Carnitas Chilo — Pedidos</title>
-  <meta name="description" content="Carnitas Don Pepe - Haz tu pedido por WhatsApp o teléfono" />
+  <meta name="description" content="Carnitas Don Chilo - Haz tu pedido por WhatsApp o teléfono" />
 
   <style>
+    /* --- Variables de colores --- */
     :root{
       --fondo:#fff7f0;
-      --color-principal:#d84315;
-      --color-acento:#ffb74d;
+      --principal:#d84315;
+      --acento:#ffb74d;
       --tarjeta:#ffffff;
       --texto:#2b2b2b;
       --texto-suave:#6b6b6b;
@@ -29,7 +30,7 @@
     }
 
     header{
-      background:var(--color-principal);
+      background:var(--principal);
       color:#fff;
       padding:28px 16px;
       text-align:center;
@@ -37,6 +38,9 @@
       border-bottom-right-radius:18px;
       box-shadow:var(--sombra);
     }
+
+    header h1{margin:0;font-size:clamp(20px,4vw,28px)}
+    header p{margin:6px 0 0;font-size:14px}
 
     main{
       max-width:980px;
@@ -52,11 +56,87 @@
       margin-bottom:18px;
     }
 
+    .hero{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .hero .img{
+      flex:0 0 160px;
+      height:120px;
+      background:#f3f3f3;
+      border-radius:12px;
+    }
+
+    .hero .info{flex:1;min-width:220px}
+
+    .buttons{
+      display:flex;
+      gap:12px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .btn--whatsapp{background:#25D366;color:white}
+    .btn--phone{background:#fff;color:var(--principal);border:1px solid #f0a07a}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .menu-item{
+      padding:12px;
+      border-radius:10px;
+      background:#fff6f3;
+    }
+
     footer{
       text-align:center;
       color:var(--texto-suave);
       font-size:13px;
       margin-top:22px;
+    }
+
+    form.contact{
+      display:flex;
+      gap:8px;
+      margin-top:8px;
+      flex-wrap:wrap;
+    }
+
+    input, button{
+      padding:10px;
+      border-radius:8px;
+      border:1px solid #eee;
+    }
+
+    button{
+      background:var(--acento);
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .badge{
+      display:inline-block;
+      background:#fff2ea;
+      color:var(--principal);
+      padding:6px 8px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      border:1px solid #ffd0b2;
     }
   </style>
 </head>
@@ -70,17 +150,43 @@
 
 <main>
 
+  <section class="card hero">
+    <div class="img" aria-label="Foto de carnitas"></div>
+
+    <div class="info">
+      <div class="badge">Abierto: 9:00 — 21:00</div>
+      <h2>¡Pide hoy y disfruta!</h2>
+      <p>Paquetes, tacos y complementos</p>
+
+      <div class="buttons">
+        <a class="btn btn--whatsapp" id="botonWhatsapp" target="_blank">WhatsApp</a>
+        <a class="btn btn--phone" id="botonTelefono">📞 Llamar ahora</a>
+      </div>
+
+      <form class="contact" id="formularioRapido">
+        <input type="text" id="nombreCliente" placeholder="Tu nombre" required />
+        <input type="text" id="pedidoCliente" placeholder="Ej: 2 kg de carnitas" required />
+        <button type="submit">Enviar por WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
   <section class="card">
-    <h2>Pedido rápido</h2>
-
-    <a id="botonWhatsapp" href="#" target="_blank">WhatsApp</a>
-    <a id="botonTelefono" href="#">📞 Llamar</a>
-
-    <form id="formularioRapido">
-      <input type="text" id="nombreCliente" placeholder="Tu nombre" required>
-      <input type="text" id="pedidoCliente" placeholder="Ej: 2 kg de carnitas" required>
-      <button type="submit">Enviar pedido</button>
-    </form>
+    <h3>Menú rápido</h3>
+    <div class="grid">
+      <div class="menu-item">
+        <h3>Paquete familiar</h3>
+        <p>$420 — Incluye tortillas y salsa</p>
+      </div>
+      <div class="menu-item">
+        <h3>Medio kilo</h3>
+        <p>$120 — Ideal para 2-3 personas</p>
+      </div>
+      <div class="menu-item">
+        <h3>Taco</h3>
+        <p>$22 — A tu gusto</p>
+      </div>
+    </div>
   </section>
 
   <footer>
@@ -93,14 +199,12 @@
   // ===============================
   // CONFIGURACIÓN DEL NEGOCIO
   // ===============================
-
   const NUMERO_WHATSAPP = "525512345678"; // código país + número
-  const NUMERO_TELEFONO = "5551234567";   // número local
+  const NUMERO_TELEFONO = "5551234567";   // teléfono local
 
   // ===============================
   // ELEMENTOS DEL DOM
   // ===============================
-
   const botonWhatsapp = document.getElementById('botonWhatsapp');
   const botonTelefono = document.getElementById('botonTelefono');
   const formularioRapido = document.getElementById('formularioRapido');
@@ -111,26 +215,20 @@
   // ===============================
   // AL CARGAR LA PÁGINA
   // ===============================
-
   document.addEventListener('DOMContentLoaded', () => {
 
-    // Configurar botón de WhatsApp
     const mensajeInicial = encodeURIComponent(
       "Hola, quiero hacer un pedido. Mi nombre es ____ y quiero: "
     );
+
     botonWhatsapp.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${mensajeInicial}`;
-
-    // Configurar botón de teléfono
     botonTelefono.href = `tel:${NUMERO_TELEFONO}`;
-
-    // Mostrar año actual en el footer
     anioActual.textContent = new Date().getFullYear();
   });
 
   // ===============================
-  // FUNCIÓN PARA ENVIAR PEDIDO
+  // ENVIAR PEDIDO POR WHATSAPP
   // ===============================
-
   function enviarPedidoRapido(evento){
     evento.preventDefault();
 
@@ -143,17 +241,12 @@
     }
 
     const mensaje = `Hola, soy ${nombre}. Quiero pedir: ${pedido}. ¿Me confirman precio y horario?`;
-    const urlWhatsapp = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
+    const url = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
 
-    window.open(urlWhatsapp, '_blank');
+    window.open(url, '_blank');
   }
 
-  // ===============================
-  // EVENTOS
-  // ===============================
-
   formularioRapido.addEventListener('submit', enviarPedidoRapido);
-
 </script>
 
 </body>
